@@ -1,0 +1,53 @@
+---
+title: "project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# installing required libraries
+install.packages("xgboost",dependencies = TRUE)
+install.packages("stringr",dependencies = TRUE)
+install.packages("readr",dependencies = TRUE)
+install.packages("caret",dependencies = TRUE)
+install.packages("car",dependencies = TRUE)
+install.packages("lubridate",dependencies = TRUE)
+install.packages("dplyr",dependencies = TRUE)
+install.packages("tm",dependencies = TRUE)
+install.packages("matrix",dependencies = TRUE)
+
+```
+
+```{r}
+setwd("F:/Semester 2nd/Multi Variate/Project")
+
+library(readr)
+train<- read_csv("Airbnb/train_users_2.csv")
+test <- read_csv("Airbnb/test_users.csv")
+countries <- read_csv("Airbnb/countries.csv")
+sessions <- read_csv("Airbnb/sessions.csv")
+details <- read_csv("Airbnb/age_gender_bkts.csv")
+
+test$country_destination <- NA
+train$trainFlag <- 1
+test$trainFlag <- 0
+```
+```{r}
+#merging the two, test and train data
+
+df_all <- rbind(train, test)
+View(df_all)
+
+df_all$year <- substring(df_all$timestamp_first_active, 1, 4)
+df_all$month <- substring(df_all$timestamp_first_active, 5, 6)
+df_all$day <- substring(df_all$timestamp_first_active, 7, 8)
+df_all$date <- as.Date(paste(df_all$year, df_all$month, df_all$day, sep = "-"))
+df_all$year <- as.integer(df_all$year)
+df_all$month <- as.integer(df_all$month)
+df_all$day <- as.integer(df_all$day)
+
+```
+
